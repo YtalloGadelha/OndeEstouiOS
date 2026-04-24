@@ -9,9 +9,12 @@
 import UIKit
 import MapKit
 
+@available(iOS 13.0, *)
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
     @IBOutlet weak var mapa: MKMapView!
+    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var navBar: UINavigationBar!
     var gerenciadorLocalizacao = CLLocationManager()
     
     @IBOutlet weak var velocidadeLabel: UILabel!
@@ -22,10 +25,47 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        overrideUserInterfaceStyle = .light
+        
+        configuraGerenciadorLocalizacao()
+        setupConstraints()
+        
+    }
+    
+    func configuraGerenciadorLocalizacao(){
+        
         gerenciadorLocalizacao.delegate = self
         gerenciadorLocalizacao.desiredAccuracy = kCLLocationAccuracyBest
         gerenciadorLocalizacao.requestWhenInUseAuthorization()
         gerenciadorLocalizacao.startUpdatingLocation()
+        
+    }
+    
+    func setupConstraints() {
+        
+        self.navBar.translatesAutoresizingMaskIntoConstraints = false
+        self.infoView.translatesAutoresizingMaskIntoConstraints = false
+        self.mapa.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.view.addSubview(self.navBar)
+        self.view.addSubview(self.infoView)
+        self.view.addSubview(self.mapa)
+        
+        self.navBar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 60).isActive = true
+        self.navBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        self.navBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
+        self.navBar.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.10).isActive = true
+        
+        self.infoView.topAnchor.constraint(equalTo: self.navBar.bottomAnchor, constant: -30).isActive = true
+        self.infoView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        self.infoView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
+        self.infoView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.20).isActive = true
+        
+        self.mapa.topAnchor.constraint(equalTo: self.infoView.bottomAnchor, constant: 4).isActive = true
+        self.mapa.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        self.mapa.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
+        self.mapa.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -110,7 +150,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 }
                 
             }else{
-                print(erro)
+                print(erro as Any)
             }
         }
         
