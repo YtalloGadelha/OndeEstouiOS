@@ -25,6 +25,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Forçando modo "claro"
         overrideUserInterfaceStyle = .light
         
         configuraGerenciadorLocalizacao()
@@ -107,12 +108,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                         subThoroughfare = dadosLocal.subThoroughfare!
                     }
                     
-                    //cidade
-                    var locality = ""
-                    if dadosLocal.locality != nil{
-                        locality = dadosLocal.locality!
-                    }
-                    
                     //bairro
                     var subLocality = ""
                     if dadosLocal.subLocality != nil{
@@ -125,10 +120,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                         postalCode = dadosLocal.postalCode!
                     }
                     
-                    //país
-                    var country = ""
-                    if dadosLocal.country != nil{
-                        country = dadosLocal.country!
+                    //cidade
+                    var locality = ""
+                    if dadosLocal.locality != nil{
+                        locality = dadosLocal.locality!
                     }
                     
                     //área administrativa
@@ -142,9 +137,19 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                         subadministrativeArea = dadosLocal.subAdministrativeArea!
                     }
                     
+                    //país
+                    var country = ""
+                    if dadosLocal.country != nil{
+                        country = dadosLocal.country!
+                    }
+                    
                     self.enderecoLabel.text = thoroughfare + " - "
                                                         + subThoroughfare + " / "
+                                                        + subLocality + " / "
+                                                        + postalCode + " / "
                                                         + locality + " / "
+                                                        + administrativeArea + " / "
+                                                        + subadministrativeArea + " / "
                                                         + country
                     
                 }
@@ -164,8 +169,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             
             let acaoConfiguracoes = UIAlertAction(title: "Abrir configurações", style: .default) { (alertaConfiguracoes) in
                 
-                if let configuracoes = NSURL(string: UIApplication.openSettingsURLString){
-                    
+                if let configuracoes = NSURL(string: UIApplication.openSettingsURLString){                    
                     UIApplication.shared.open(configuracoes as URL)
                 }
             }
